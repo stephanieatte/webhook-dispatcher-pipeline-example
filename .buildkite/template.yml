@@ -1,0 +1,10 @@
+name: "Webhook Dispatcher Pipeline Example"
+description: "An example pipeline that fans a single GitHub webhook out to many downstream Buildkite pipelines using trigger steps."
+emoji: ":satellite:"
+color: "#14CC80"
+languages:
+  - "YAML"
+  - "Python"
+steps:
+  - command: "buildkite-agent pipeline upload"
+    label: ":pipeline:"
