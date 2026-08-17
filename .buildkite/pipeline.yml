@@ -19,4 +19,8 @@ steps:
     command: |
       pip install --quiet pyyaml
       .buildkite/scripts/generate-trigger-steps.py | buildkite-agent pipeline upload
-
+    plugins:
+      - docker#v5.13.0:
+          image: "python:3.12-slim"
+          mount-buildkite-agent: true
+          pre-command: "apt-get update && apt-get install -y --no-install-recommends git"
