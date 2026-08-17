@@ -13,14 +13,9 @@
 # to adapt the routing logic in scripts/generate-trigger-steps.py.
 # =============================================================================
 
-steps:
+   steps:
   - label: ":mag: Determine downstream pipelines"
     key: "determine-triggers"
     command: |
-      pip install --quiet pyyaml
+      python3 -m pip install --quiet --user pyyaml
       .buildkite/scripts/generate-trigger-steps.py | buildkite-agent pipeline upload
-    plugins:
-      - docker#v5.13.0:
-          image: "python:3.12-slim"
-          mount-buildkite-agent: true
-          pre-command: "apt-get update && apt-get install -y --no-install-recommends git"
