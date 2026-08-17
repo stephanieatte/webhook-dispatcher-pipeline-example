@@ -19,9 +19,4 @@ steps:
     command: |
       pip install --quiet pyyaml
       .buildkite/scripts/generate-trigger-steps.py | buildkite-agent pipeline upload
-    plugins:
-      - docker#v5.11.0:
-          image: "python:3.12-slim"
-          propagate-environment: true
-    agents:
-      queue: "default"
+
