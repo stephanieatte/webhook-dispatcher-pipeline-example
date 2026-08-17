@@ -43,7 +43,7 @@ Buildkite's [GitHub webhook integration](https://buildkite.com/docs/pipelines/so
 
 ## How it works
 
-Use **one dispatcher pipeline** as the single point of contact with GitHub, and fan out to as many downstream pipelines as needed:
+Use **one dispatcher pipeline** as the single point of contact with GitHub, and fan out to as many downstream pipelines as needed. Only the dispatcher consumes a webhook slot, so the webhook limit no longer scales with pipeline count. There are two options to do the diffing and routing that decides which pipelines to trigger, and this repo includes both. 
 
 ```
 GitHub push/PR
@@ -60,15 +60,11 @@ service-a      service-b     (…any number more)
 (no webhook)   (no webhook)   (no webhook)
 ```
 
-Only the dispatcher consumes a webhook slot, so the webhook limit no longer scales with pipeline count.
-
-There are two ways to do the diffing and routing that decides which pipelines to trigger, and this repo includes both. 
-
 ### Option 1: Using the Monorepo-diff Plugin
-[`monorepo-diff` plugin](https://github.com/buildkite-plugins/monorepo-diff-buildkite-plugin)** (`.buildkite/examples/pipeline.monorepo-diff.yml`) — the diff and the path → pipeline routing are both declared in the plugin's `watch` config, no script to maintain.
+You can use the monorepo-diff plugin [.buildkite/examples/pipeline.monorepo-diff.yml]() to declare both the diff and the path → pipeline routing in its watch config. 
 
 ### Option 2: Custom script + trigger steps
-     (`.buildkite/pipeline.yml`, `.buildkite/scripts/generate-trigger-steps.sh`) — a small shell script diffs the changed paths against `.buildkite/routes.conf` and uploads `trigger` steps itself; more headroom if your routing logic outgrows a straight path match.
+Use [.buildkite/pipeline.yml](), which uploads a small script that diffs the changed paths against a routing config and generates a trigger step for each matching pipeline. It gives more headroom if your routing logic outgrows a straight path match."
 
 ## License
 
