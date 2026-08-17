@@ -93,45 +93,7 @@ libs/
 
 `services/service-a/.buildkite/pipeline.yml` and `services/service-b/.buildkite/pipeline.yml` are ordinary pipelines with nothing dispatcher-specific about them. In the Buildkite dashboard each is its own pipeline entity with its GitHub webhook **left disabled**, and its "Steps" configuration pointing at its own `pipeline.yml` path in this repo. They only ever run when the dispatcher triggers them.
 
-## Adapting the routing logic
 
-Most teams will only ever need to edit **`routes.yml`** — the script is intentionally generic. To wire up a new downstream pipeline:
-
-```yaml
-routes:
-  - pipeline: "service-c"
-    paths:
-      - "services/service-c/"
-```
-
-That's it — no script changes. Other things you can adjust:
-
-- **`always_trigger`** — pipeline slugs that should run on every dispatched build regardless of diff (e.g. a repo-wide lint or security scan).
-- **`full_rebuild_branches`** — branch glob patterns (e.g. `release/*`) where you want every routed pipeline to run, ignoring the diff.
-
-If your routing needs are more complex than "path prefix match" — routing by commit message tags, by GitHub PR labels, or by a custom manifest file per service — that logic lives in `determine_pipelines()` in `generate-trigger-steps.py`. It returns a plain list of pipeline slugs, so you can swap out *how* that list gets built without touching anything downstream (YAML emission, the `trigger` step shape, env forwarding, etc. all stay the same).
-
-A few things worth keeping in mind if you extend this:
-
-- **Keep the dispatcher itself cheap.** Its job is routing, not building — avoid adding real build/test work to `.buildkite/pipeline.yml`.
-- **`async: false`** on the generated `trigger` steps means the dispatcher build waits for downstream builds to finish, so its overall status reflects them. Set it to `true` per-pipeline for fire-and-forget.
-- **Forward what downstream pipelines actually need** via the `build.env` block on each `trigger` step (see `service-b`'s pipeline for an example of reading it back).
-- **Don't forget to disable the webhook on downstream pipelines** when you create them in the Buildkite dashboard — that's the whole point of the pattern, and it's easy to forget on pipeline #21.
-<!-- docs:end -->
-
-## Setup
-
-None! This example runs on Buildkite-hosted agents, so there's nothing to install or configure. Just click **Add to Buildkite** above.
-
-To reproduce the full fan-out, you'll need three Buildkite pipelines pointed at this one repo:
-
-| Pipeline slug | Steps path | GitHub webhook |
-|---|---|---|
-| `webhook-dispatcher-pipeline-example` (this repo's public pipeline) | `.buildkite/pipeline.yml` | ✔ enabled |
-| `service-a` | `services/service-a/.buildkite/pipeline.yml` | ✘ disabled |
-| `service-b` | `services/service-b/.buildkite/pipeline.yml` | ✘ disabled |
-
-> 💡 If you'd like to run this on your own infrastructure instead, see [Buildkite Agent setup](https://buildkite.com/docs/agent).
 
 ## License
 
