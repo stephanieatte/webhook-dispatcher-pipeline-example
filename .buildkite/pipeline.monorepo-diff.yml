@@ -44,10 +44,9 @@ steps:
             # (libs/shared-proto/ is a dependency both services build
             # against — see libs/shared-proto/README.md)
             - path:
-                - "services/service-a/"
-                - "libs/shared-proto/"
+                - "services/service-a/
               config:
-                trigger: "service-a"
+                trigger: "deploy"
                 label: ":rocket: Trigger service-a"
                 build:
                   branch: "${BUILDKITE_BRANCH}"
@@ -56,7 +55,7 @@ steps:
 
             - path: "services/service-b/"
               config:
-                trigger: "service-b"
+                trigger: "merge"
                 label: ":rocket: Trigger service-b"
                 build:
                   branch: "${BUILDKITE_BRANCH}"
