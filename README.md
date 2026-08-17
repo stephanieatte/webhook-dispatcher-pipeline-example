@@ -3,9 +3,9 @@
 [![Build status](https://badge.buildkite.com/FIXME.svg?branch=main)](https://buildkite.com/buildkite/FIXME)
 [![Add to Buildkite](https://img.shields.io/badge/Add%20to%20Buildkite-14CC80)](https://buildkite.com/new)
 
-Buildkite's [GitHub webhook integration](https://buildkite.com/docs/pipelines/source-control/github) is 1:1, each pipeline that wants to build automatically on push needs its own webhook on the repo, and GitHub caps a repo at 20 webhooks. Teams running many pipelines off one repo — a large monorepo, or just lots of small pipelines pointed at the same repo — hit that ceiling. 
+Buildkite's [GitHub webhook integration](https://buildkite.com/docs/pipelines/source-control/github) is 1:1, each pipeline that wants to build automatically on push needs its own webhook on the repo, and GitHub caps a repo at 20 webhooks. 
 
-This repository is an example Buildkite](https://buildkite.com/) pipeline that works around it, by fanning a single webhook out to many downstream pipelines using trigger steps.
+This repository is an example Buildkite](https://buildkite.com/) pipeline that works around it, by fanning a single webhook out to many downstream pipelines.
 
 ## How it works
 
