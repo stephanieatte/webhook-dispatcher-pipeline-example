@@ -73,22 +73,21 @@ Its default `diff` command (`git diff --name-only HEAD~1`) compares against the 
 ## Repository layout
 
 ```
-.buildkite/
-  pipeline.yml                    # dispatcher variant 1: custom script (this repo's public pipeline)
-  routes.yml                      # declarative path → pipeline routing table (edit this)
-  scripts/
-    generate-trigger-steps.py     # reads routes.yml + git diff, emits `trigger` steps
-  examples/
-    pipeline.monorepo-diff.yml       # dispatcher variant 2: monorepo-diff plugin
-    pipeline.conditional-trigger.yml # dispatcher variant 3: native `if` conditionals
-
-services/
-  service-a/.buildkite/pipeline.yml   # downstream pipeline #1 (no webhook)
-  service-b/.buildkite/pipeline.yml   # downstream pipeline #2 (no webhook)
-
-libs/
-  shared-proto/                   # a shared dependency, used to show routing on
-                                   # a path that isn't a single service's own directory
+.
+├── .buildkite/
+│   ├── pipeline.yml                        # dispatcher variant 1: custom script (this repo's public pipeline)
+│   ├── routes.yml                          # declarative path → pipeline routing table (edit this)
+│   ├── scripts/
+│   │   └── generate-trigger-steps.py       # reads routes.yml + git diff, emits `trigger` steps
+│   └── examples/
+│       ├── pipeline.monorepo-diff.yml       # dispatcher variant 2: monorepo-diff plugin
+│       └── pipeline.conditional-trigger.yml # dispatcher variant 3: native `if` conditionals
+├── services/
+│   ├── service-a/.buildkite/pipeline.yml   # downstream pipeline #1 (no webhook)
+│   └── service-b/.buildkite/pipeline.yml   # downstream pipeline #2 (no webhook)
+└── libs/
+    └── shared-proto/                       # a shared dependency, used to show routing on
+                                             # a path that isn't a single service's own directory
 ```
 
 `services/service-a/.buildkite/pipeline.yml` and `services/service-b/.buildkite/pipeline.yml` are ordinary pipelines with nothing dispatcher-specific about them. In the Buildkite dashboard each is its own pipeline entity with its GitHub webhook **left disabled**, and its "Steps" configuration pointing at its own `pipeline.yml` path in this repo. They only ever run when the dispatcher triggers them.
