@@ -42,8 +42,10 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
 Buildkite's [GitHub webhook integration](https://buildkite.com/docs/pipelines/source-control/github) is 1:1 — each pipeline that wants to build automatically on push needs its own webhook on the repo, and GitHub caps a repo at **20 webhooks**. Teams running many pipelines off one repo — a large monorepo, or just lots of small pipelines pointed at the same repo — hit that ceiling.
 
 ## How it works
-```
+
 Use **one dispatcher pipeline** as the single point of contact with GitHub, and fan out to as many downstream pipelines as needed via `trigger` steps:
+
+```
 GitHub push/PR
       │
       ▼
