@@ -43,8 +43,7 @@ steps:
             # A change under either of these paths triggers service-a.
             # (libs/shared-proto/ is a dependency both services build
             # against — see libs/shared-proto/README.md)
-            - path:
-                - "services/service-a/
+            - path: "services/service-a/
               config:
                 trigger: "deploy"
                 label: ":rocket: Trigger service-a"
