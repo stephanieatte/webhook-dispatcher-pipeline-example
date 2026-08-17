@@ -26,13 +26,11 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
 ```
 .
 ├── .buildkite/
-│   ├── pipeline.yml                        # dispatcher variant 1: custom script (this repo's public pipeline)
-│   ├── routes.yml                          # declarative path → pipeline routing table (edit this)
+│   ├── pipeline.yml                        # dispatcher variant 1: custom script
+│   ├── pipeline.monorepo-diff.yml          # dispatcher variant 2: monorepo-diff plugin
 │   ├── scripts/
 │   │   └── generate-trigger-steps.py       # reads routes.yml + git diff, emits `trigger` steps
-│   └── examples/
-│       ├── pipeline.monorepo-diff.yml       # dispatcher variant 2: monorepo-diff plugin
-│       └── pipeline.conditional-trigger.yml # dispatcher variant 3: native `if` conditionals
+│   └─    
 ├── services/
 │   ├── service-a/.buildkite/pipeline.yml   # downstream pipeline #1 (no webhook)
 │   └── service-b/.buildkite/pipeline.yml   # downstream pipeline #2 (no webhook)
@@ -40,7 +38,6 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
     └── shared-proto/                       # a shared dependency, used to show routing on
                                              # a path that isn't a single service's own directory
 ```
-
 
 <!-- docs:start -->
 
