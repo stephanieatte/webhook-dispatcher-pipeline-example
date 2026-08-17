@@ -64,14 +64,11 @@ Only the dispatcher consumes a webhook slot, so the webhook limit no longer scal
 
 There are two ways to do the diffing and routing that decides which pipelines to trigger, and this repo includes both. 
 
-- **[`monorepo-diff` plugin](https://github.com/buildkite-plugins/monorepo-diff-buildkite-plugin)** (`.buildkite/examples/pipeline.monorepo-diff.yml`) — the diff and the path → pipeline routing are both declared in the plugin's `watch` config, no script to maintain.
-- **A custom script + `trigger` steps** (`.buildkite/pipeline.yml`, `.buildkite/scripts/generate-trigger-steps.sh`) — a small shell script diffs the changed paths against `.buildkite/routes.conf` and uploads `trigger` steps itself; more headroom if your routing logic outgrows a straight path match.
-This repo includes **two dispatcher variants**, both routing on changed file paths. Run only one against your actual GitHub webhook — they're alternatives, not layers.
+### Option 1: Using the Monorepo-diff Plugin
+[`monorepo-diff` plugin](https://github.com/buildkite-plugins/monorepo-diff-buildkite-plugin)** (`.buildkite/examples/pipeline.monorepo-diff.yml`) — the diff and the path → pipeline routing are both declared in the plugin's `watch` config, no script to maintain.
 
-| Variant | File | Best fit |
-|---|---|---|
-| Custom script (default — this repo's public pipeline) | `.buildkite/pipeline.yml` | Routing logic more complex than a straight path match, or you'd rather not add a plugin dependency |
-| [`monorepo-diff` plugin](https://github.com/buildkite-plugins/monorepo-diff-buildkite-plugin) | `.buildkite/examples/pipeline.monorepo-diff.yml` | Straightforward path-based routing, no script to maintain |
+### Option 2: Custom script + trigger steps
+     (`.buildkite/pipeline.yml`, `.buildkite/scripts/generate-trigger-steps.sh`) — a small shell script diffs the changed paths against `.buildkite/routes.conf` and uploads `trigger` steps itself; more headroom if your routing logic outgrows a straight path match.
 
 ## License
 
