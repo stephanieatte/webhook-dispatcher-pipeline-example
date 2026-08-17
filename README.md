@@ -30,9 +30,7 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
 ├── services/
 │   ├── service-a/.buildkite/pipeline.yml   # downstream pipeline #1 (no webhook)
 │   └── service-b/.buildkite/pipeline.yml   # downstream pipeline #2 (no webhook)
-└── libs/
-    └── shared-proto/                       # a shared dependency, used to show routing on
-                                             # a path that isn't a single service's own directory
+
 ```
 
 <!-- docs:start -->
