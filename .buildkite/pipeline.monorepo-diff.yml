@@ -67,5 +67,5 @@ steps:
             - path: "services/"
               config:
                 if: build.branch == "main"
-                trigger: "release-pipeline"
+                trigger: "annotate"
                 label: ":package: Trigger release-pipeline"
