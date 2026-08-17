@@ -64,7 +64,7 @@ service-a      service-b     (…any number more)
 You can use the monorepo-diff plugin [.buildkite/examples/pipeline.monorepo-diff.yml](https://github.com/stephanieatte/webhook-dispatcher-pipeline-example/blob/main/.buildkite/pipeline.monorepo-diff.yml) to declare both the diff and the path → pipeline routing in its watch config. 
 
 ### Option 2: Custom script + trigger steps
-Use [.buildkite/pipeline.yml](), which uploads a small script that diffs the changed paths against a routing config and generates a trigger step for each matching pipeline. It gives more headroom if your routing logic outgrows a straight path match."
+Use [.buildkite/pipeline.yml](https://github.com/stephanieatte/webhook-dispatcher-pipeline-example/blob/main/.buildkite/pipeline.yml), which uploads a small script that diffs the changed paths against a routing config and generates a trigger step for each matching pipeline. It gives more headroom if your routing logic outgrows a straight path match."
 
 ## License
 
