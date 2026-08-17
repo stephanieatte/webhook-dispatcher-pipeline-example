@@ -7,10 +7,6 @@ Buildkite's [GitHub webhook integration](https://buildkite.com/docs/pipelines/so
 
 This repository is an example Buildkite](https://buildkite.com/) pipeline that works around it, by fanning a single webhook out to many downstream pipelines.
 
-## How it works
-
-Use **one dispatcher pipeline** as the single point of contact with GitHub, and fan out to as many downstream pipelines as needed via `trigger` steps. Only the dispatcher consumes a webhook slot, so the webhook limit no longer scales with pipeline count:
-
 👉 **See this example in action:** [buildkite/FIXME](https://buildkite.com/buildkite/FIXME/builds/latest)
 
 See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-started) for step-by-step instructions on how to get this running, or try it yourself:
