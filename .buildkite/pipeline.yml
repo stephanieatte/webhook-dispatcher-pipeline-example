@@ -13,7 +13,7 @@
 # to adapt the routing logic in scripts/generate-trigger-steps.py.
 # =============================================================================
 
-   steps:
+steps:
   - label: ":mag: Determine downstream pipelines"
     key: "determine-triggers"
     command: |
