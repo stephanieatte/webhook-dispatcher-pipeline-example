@@ -43,7 +43,7 @@ Buildkite's [GitHub webhook integration](https://buildkite.com/docs/pipelines/so
 
 ## How it works
 
-Use **one dispatcher pipeline** as the single point of contact with GitHub, and fan out to as many downstream pipelines as needed via `trigger` steps:
+Use **one dispatcher pipeline** as the single point of contact with GitHub, and fan out to as many downstream pipelines as needed:
 
 ```
 GitHub push/PR
@@ -60,32 +60,18 @@ service-a      service-b     (…any number more)
 (no webhook)   (no webhook)   (no webhook)
 ```
 
-Only the dispatcher consumes a webhook slot. Downstream pipelines are ordinary Buildkite pipelines — they're just started via `trigger` instead of GitHub, so the webhook limit no longer scales with pipeline count.
+Only the dispatcher consumes a webhook slot, so the webhook limit no longer scales with pipeline count.
 
+There are two ways to do the diffing and routing that decides which pipelines to trigger, and this repo includes both. 
+
+- **[`monorepo-diff` plugin](https://github.com/buildkite-plugins/monorepo-diff-buildkite-plugin)** (`.buildkite/examples/pipeline.monorepo-diff.yml`) — the diff and the path → pipeline routing are both declared in the plugin's `watch` config, no script to maintain.
+- **A custom script + `trigger` steps** (`.buildkite/pipeline.yml`, `.buildkite/scripts/generate-trigger-steps.sh`) — a small shell script diffs the changed paths against `.buildkite/routes.conf` and uploads `trigger` steps itself; more headroom if your routing logic outgrows a straight path match.
 This repo includes **two dispatcher variants**, both routing on changed file paths. Run only one against your actual GitHub webhook — they're alternatives, not layers.
 
 | Variant | File | Best fit |
 |---|---|---|
 | Custom script (default — this repo's public pipeline) | `.buildkite/pipeline.yml` | Routing logic more complex than a straight path match, or you'd rather not add a plugin dependency |
 | [`monorepo-diff` plugin](https://github.com/buildkite-plugins/monorepo-diff-buildkite-plugin) | `.buildkite/examples/pipeline.monorepo-diff.yml` | Straightforward path-based routing, no script to maintain |
-
-### Variant 1: the custom script (default)
-
-`.buildkite/pipeline.yml` runs one step: it executes `.buildkite/scripts/generate-trigger-steps.sh` and pipes the output straight into `buildkite-agent pipeline upload`. This is the standard [dynamic pipelines](https://buildkite.com/docs/pipelines/configure/dynamic-pipelines) technique — the script's stdout *is* the next set of steps.
-
-The script:
-
-1. Figures out which files changed (diffing against the PR base branch for PR builds, or the previous commit for pushes to the default branch — falling back to "trigger everything" if neither diff is available).
-2. Loads `.buildkite/routes.conf` and checks each route's path prefix against the changed files.
-3. Emits a `trigger` step for every matched pipeline (or an informational no-op step if nothing matched), forwarding the branch, commit, and message to the triggered build.
-
-### Variant 2: the `monorepo-diff` plugin
-
-`.buildkite/examples/pipeline.monorepo-diff.yml` uses the official [`monorepo-diff-buildkite-plugin`](https://github.com/buildkite-plugins/monorepo-diff-buildkite-plugin) instead of a custom script. The plugin diffs the changed files itself and triggers a downstream pipeline for each `watch` entry whose `path` matches something in the diff — the plugin-config equivalent of `routes.conf`.
-
-Its default `diff` command (`git diff --name-only HEAD~1`) compares against the previous commit, which is fine for simple pushes but usually wrong for PR builds — this example overrides it to diff against the PR base branch when one exists.
-
-
 
 ## License
 
