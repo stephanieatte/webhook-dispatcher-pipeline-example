@@ -46,7 +46,7 @@ steps:
             - path: "services/service-a/"
               config:
                 trigger: "deploy"
-                label: ":rocket: Trigger service-a"
+                label: ":rocket: Trigger service-a by changes affecting service-a from Monorepo Diff"
                 build:
                   branch: "${BUILDKITE_BRANCH}"
                   commit: "${BUILDKITE_COMMIT}"
@@ -55,7 +55,7 @@ steps:
             - path: "services/service-b/"
               config:
                 trigger: "merge"
-                label: ":rocket: Trigger service-b"
+                label: ":rocket: Trigger service-b by changes affecting service-a from Monorepo Diff"
                 build:
                   branch: "${BUILDKITE_BRANCH}"
                   commit: "${BUILDKITE_COMMIT}"
