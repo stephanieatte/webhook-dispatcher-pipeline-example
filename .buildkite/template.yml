@@ -1,5 +1,5 @@
 name: "Webhook Dispatcher Pipeline Example"
-description: "An example pipeline that fans a single GitHub webhook out to many downstream Buildkite pipelines using trigger steps."
+description: "An example pipeline that fans a single GitHub webhook out to many downstream Buildkite pipelines using trigger steps or the Monorepo diff Plugin"
 emoji: ":satellite:"
 color: "#14CC80"
 languages:
