@@ -25,11 +25,11 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
 │   ├── pipeline.yml                        # dispatcher variant 1: custom script
 │   ├── pipeline.monorepo-diff.yml          # dispatcher variant 2: monorepo-diff plugin
 │   ├── scripts/
-│   │   └── generate-trigger-steps.py       # reads routes.yml + git diff, emits `trigger` steps
-│   └─    
+│   │   └── generate-trigger-steps.sh       # reads routes.yml + git diff, emits `trigger` steps
+│   └── routes.conf
 ├── services/
-│   ├── service-a/.buildkite/pipeline.yml   # downstream pipeline #1 (no webhook)
-│   └── service-b/.buildkite/pipeline.yml   # downstream pipeline #2 (no webhook)
+    ├── service-a/.buildkite/pipeline.yml   # downstream pipeline #1 (no webhook)
+    └── service-b/.buildkite/pipeline.yml   # downstream pipeline #2 (no webhook)
 
 ```
 
