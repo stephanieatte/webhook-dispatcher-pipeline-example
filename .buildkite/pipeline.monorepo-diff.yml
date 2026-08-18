@@ -60,12 +60,3 @@ steps:
                   branch: "${BUILDKITE_BRANCH}"
                   commit: "${BUILDKITE_COMMIT}"
                   message: "Triggered by changes affecting service-b"
-
-            # Example of combining a path match with a native conditional:
-            # only trigger release-pipeline for changes under services/
-            # AND only on main. Requires monorepo-diff >= v1.0.0.
-            - path: "services/"
-              config:
-                if: build.branch == "main"
-                trigger: "annotate"
-                label: ":package: Trigger release-pipeline"
