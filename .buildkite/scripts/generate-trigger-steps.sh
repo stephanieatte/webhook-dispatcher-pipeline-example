@@ -41,7 +41,7 @@ while IFS=':' read -r watched_path pipeline_slug; do
     triggered_any=true
     cat <<STEP
   - trigger: "${pipeline_slug}"
-    label: ":rocket: Trigger ${pipeline_slug}"
+    label: ":rocket: Trigger ${pipeline_slug} Pipeline"
     build:
       message: "${BUILDKITE_MESSAGE:-}"
       commit: "${BUILDKITE_COMMIT:-HEAD}"
