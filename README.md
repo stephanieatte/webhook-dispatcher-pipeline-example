@@ -27,7 +27,8 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
 │   ├── scripts/
 │   │   └── generate-trigger-steps.sh       # reads routes.yml + git diff, emits `trigger` steps
 │   └── routes.conf
-├── services/
+│
+└── services/
     ├── service-a/.buildkite/pipeline.yml   # downstream pipeline #1 (no webhook)
     └── service-b/.buildkite/pipeline.yml   # downstream pipeline #2 (no webhook)
 
