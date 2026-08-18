@@ -37,7 +37,7 @@
 steps:
   - label: ":mag: Check changed files"
     plugins:
-      - monorepo-diff#v1.11.0:
+      - monorepo-diff#v1.11.1:
           diff: "git diff --name-only HEAD~1"
           watch:
             # A change under either of these paths triggers service-a.
@@ -50,7 +50,7 @@ steps:
                 build:
                   branch: "${BUILDKITE_BRANCH}"
                   commit: "${BUILDKITE_COMMIT}"
-                  message: "Triggered by changes affecting service-a"
+                  message: "Triggered by changes affecting service-a from Monorepo Diff"
 
             - path: "services/service-b/"
               config:
@@ -59,4 +59,4 @@ steps:
                 build:
                   branch: "${BUILDKITE_BRANCH}"
                   commit: "${BUILDKITE_COMMIT}"
-                  message: "Triggered by changes affecting service-b"
+                  message: "Triggered by changes affecting service-b from Monorepo Diff"
