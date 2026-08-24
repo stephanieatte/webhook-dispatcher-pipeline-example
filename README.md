@@ -46,7 +46,7 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
 
 ## How it works
 
-Use **one dispatcher pipeline** as the single point of contact with GitHub, and fan out to as many downstream pipelines, only the dispatcher consumes a webhook slot, so the webhook limit no longer scales with pipeline count:
+It uses one dispatcher pipeline as the single point of contact with GitHub, and fan out to as many downstream pipelines, only the dispatcher consumes a webhook slot, so the webhook limit no longer scales with pipeline count:
 
 ```
 GitHub push/PR
@@ -65,7 +65,9 @@ service-a      service-b     (…any number more)
 
 Only the dispatcher pipeline consumes a webhook slot. Downstream pipelines are started via trigger instead of GitHub, so the webhook limit no longer scales with pipeline count. 
 
-Which downstream pipelines actually get triggered is controlled entirely by `.buildkite/routes.conf`. Each line maps a path in this repo to the slug of the pipeline that should be triggered when something under that path changes. On every build, the script diffs the changed files against these paths and only triggers the pipelines whose watched path actually changed. For example,  if nothing under services/service-a/ changed, service-a-pipeline doesn't run. 
+Which downstream pipelines actually get triggered is controlled entirely by `.buildkite/routes.conf`. Each line maps a path in this repo to the slug of the pipeline that should be triggered when something under that path changes. On every build, the script diffs the changed files against these paths and only triggers the pipelines whose watched path actually changed. 
+
+For example,  if nothing under `services/service-a/` changed, **service-a-pipeline** doesn't run. 
 
 ```
 services/service-a:service-a-pipeline
