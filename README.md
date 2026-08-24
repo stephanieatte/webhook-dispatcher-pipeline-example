@@ -7,7 +7,7 @@ Buildkite's [GitHub webhook integration](https://buildkite.com/docs/pipelines/so
 
 This repository is an example Buildkite](https://buildkite.com/) pipeline that works around it, by fanning a single webhook out to many downstream pipelines.
 
-👉 **See this example in action:** [buildkite/FIXME](https://buildkite.com/buildkite/FIXME/builds/latest)
+👉 **See this example in action:** [buildkite/webhook-dispatcher-pipeline-example](https://buildkite.com/buildkite/webhook-dispatcher-pipeline-example)
 
 See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-started) for step-by-step instructions on how to get this running, or try it yourself:
 
@@ -57,15 +57,15 @@ service-a      service-b     (…any number more)
 (no webhook)   (no webhook)   (no webhook)
 ```
 
-Only the dispatcher pipelien consumes a webhook slot. Downstream pipelines are ordinary Buildkite pipelines they're just started via trigger instead of GitHub, so the webhook limit no longer scales with pipeline count. .buildkite/pipeline.yml runs one step: it executes .buildkite/scripts/generate-trigger-steps.sh and pipes the output straight into buildkite-agent pipeline upload. This is the standard dynamic pipelines technique — the script's stdout is the next set of steps.
+Only the dispatcher pipelien consumes a webhook slot. Downstream pipelines are started via trigger instead of GitHub, so the webhook limit no longer scales with pipeline count. 
 
-Which downstream pipelines actually get triggered is controlled entirely by .buildkite/routes.conf, not by editing the script itself. Each line maps a path in this repo to the slug of the pipeline that should be triggered when something under that path changes:
+Which downstream pipelines actually get triggered is controlled entirely by .buildkite/routes.conf, not by editing the script itself. Each line maps a path in this repo to the slug of the pipeline that should be triggered when something under that path changes.
+
 ```
 services/service-a:service-a-pipeline
-services/service-b:service-b-pipeline
 ```
 
-On every build, the script diffs the changed files against these paths and only triggers the pipelines whose watched path actually changed — if nothing under services/service-a/ changed, service-a-pipeline doesn't run. Adding a new downstream pipeline is just two steps create it in Buildkite without a GitHub webhook, then add a line to routes.conf mapping its path to its slug — no code changes, no GitHub-side configuration, no new webhook.
+On every build, the script diffs the changed files against these paths and only triggers the pipelines whose watched path actually changed. For example,  if nothing under services/service-a/ changed, service-a-pipeline doesn't run. 
 
 ## License
 
