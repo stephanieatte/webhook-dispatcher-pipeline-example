@@ -30,7 +30,7 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
 ├── .buildkite/
 │   ├── scripts/
 │   │   └── generate-trigger-steps.sh       # reads routes.conf + git diff, emits `trigger` steps
-│   ├── pipeline.yml                        # dispatcher — the ONLY pipeline with a GitHub webhook
+│   ├── pipeline.yml                        # dispatcher (the ONLY pipeline with a GitHub webhook)
 │   ├── routes.conf                         # path → pipeline routing table (edit this)
 │   └── template.yml
 ├── services/
@@ -63,7 +63,7 @@ service-a      service-b     (…any number more)
 (no webhook)   (no webhook)   (no webhook)
 ```
 
-Which downstream pipelines actually get triggered is controlled entirely by `.buildkite/routes.conf`. Each line maps a path in this repo to the slug of the pipeline that should be triggered when something under that path changes. On every build, the script diffs the changed files against these paths and only triggers the pipelines whose watched path actually changed. 
+Which downstream pipelines actually get triggered is controlled entirely by `.buildkite/routes.conf`. Each line maps a path in this repo to the slug of the pipeline that should be triggered when something under that path changes.
 
 For example,  if nothing under `services/service-a/` changed, **service-a-pipeline** doesn't run. 
 
