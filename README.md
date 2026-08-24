@@ -22,16 +22,18 @@ See the full [Getting Started Guide](https://buildkite.com/docs/guides/getting-s
 ```
 .
 ├── .buildkite/
-│   ├── pipeline.yml                        # dispatcher variant 1: custom script
-│   ├── pipeline.monorepo-diff.yml          # dispatcher variant 2: monorepo-diff plugin
 │   ├── scripts/
 │   │   └── generate-trigger-steps.sh       # reads routes.yml + git diff, emits `trigger` steps
-│   └── routes.conf
-│
-└── services/
-    ├── service-a/.buildkite/pipeline.yml   # downstream pipeline #1 (no webhook)
-    └── service-b/.buildkite/pipeline.yml   # downstream pipeline #2 (no webhook)
-
+│   ├── pipeline.yml
+│   ├── routes.conf
+│   └── template.yml
+├── services/
+│   ├── service-a/                          #downstream pipeline #1 (no webhook)
+│   │   └── README.md
+│   └── service-b/
+│       └── README.md                       # downstream pipeline #2 (no webhook)
+├── LICENSE
+└── README.md
 ```
 
 <!-- docs:start -->
@@ -55,14 +57,15 @@ service-a      service-b     (…any number more)
 (no webhook)   (no webhook)   (no webhook)
 ```
 
-There are two options to do the diffing and routing that decides which pipelines to trigger, and this repo includes both. 
-### Option 1: Using the Monorepo-diff Plugin
+Only the dispatcher pipelien consumes a webhook slot. Downstream pipelines are ordinary Buildkite pipelines they're just started via trigger instead of GitHub, so the webhook limit no longer scales with pipeline count. .buildkite/pipeline.yml runs one step: it executes .buildkite/scripts/generate-trigger-steps.sh and pipes the output straight into buildkite-agent pipeline upload. This is the standard dynamic pipelines technique — the script's stdout is the next set of steps.
 
-You can use the monorepo-diff plugin [.buildkite/examples/pipeline.monorepo-diff.yml](https://github.com/stephanieatte/webhook-dispatcher-pipeline-example/blob/main/.buildkite/pipeline.monorepo-diff.yml) to declare both the diff and the path → pipeline routing in its watch config. 
+Which downstream pipelines actually get triggered is controlled entirely by .buildkite/routes.conf, not by editing the script itself. Each line maps a path in this repo to the slug of the pipeline that should be triggered when something under that path changes:
+```
+services/service-a:service-a-pipeline
+services/service-b:service-b-pipeline
+```
 
-### Option 2: Custom script + trigger steps
-
-Use [.buildkite/pipeline.yml](https://github.com/stephanieatte/webhook-dispatcher-pipeline-example/blob/main/.buildkite/pipeline.yml), which uploads a small script that diffs the changed paths against a routing config and generates a trigger step for each matching pipeline. It gives more headroom if your routing logic outgrows a straight path match."
+On every build, the script diffs the changed files against these paths and only triggers the pipelines whose watched path actually changed — if nothing under services/service-a/ changed, service-a-pipeline doesn't run. Adding a new downstream pipeline is just two steps create it in Buildkite without a GitHub webhook, then add a line to routes.conf mapping its path to its slug — no code changes, no GitHub-side configuration, no new webhook.
 
 ## License
 
